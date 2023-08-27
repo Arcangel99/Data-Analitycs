@@ -1,0 +1,204 @@
+Nombre:
+	Junior Efraín Franco Péres 
+Código:
+	smim507018
+Carrera:
+	Ingeniería en Manejo y Gestión de Bases de Datos.
+
+hdoop@ubuntu:~/Downloads$ hadoop fs -mkdir /tarea
+2023-06-23 11:48:24,439 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+hdoop@ubuntu:~/Downloads$ wget https://www.gutenberg.org/files/2701/2701-0.txt
+--2023-06-23 12:08:46--  https://www.gutenberg.org/files/2701/2701-0.txt
+Resolving www.gutenberg.org (www.gutenberg.org)... 152.19.134.47
+Connecting to www.gutenberg.org (www.gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1276235 (1.2M) [text/plain]
+Saving to: ‘2701-0.txt’
+
+2701-0.txt          100%[==================>]   1.22M   766KB/s    in 1.6s    
+
+2023-06-23 12:08:48 (766 KB/s) - ‘2701-0.txt’ saved [1276235/1276235]
+
+hdoop@ubuntu:~/Downloads$ ls
+2701-0.txt  nuevom.py  nuevor.py
+hdoop@ubuntu:~/Downloads$ nano 2701-0.txt 
+hdoop@ubuntu:~/Downloads$ wget https://www.gutenberg.org/ebooks/37106.txt.utf-8--2023-06-23 12:10:16--  https://www.gutenberg.org/ebooks/37106.txt.utf-8
+Resolving www.gutenberg.org (www.gutenberg.org)... 152.19.134.47
+Connecting to www.gutenberg.org (www.gutenberg.org)|152.19.134.47|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://www.gutenberg.org/cache/epub/37106/pg37106.txt [following]
+--2023-06-23 12:10:16--  https://www.gutenberg.org/cache/epub/37106/pg37106.txt
+Reusing existing connection to www.gutenberg.org:443.
+HTTP request sent, awaiting response... 200 OK
+Length: 1113193 (1.1M) [text/plain]
+Saving to: ‘37106.txt.utf-8’
+
+37106.txt.utf-8     100%[==================>]   1.06M  1.48MB/s    in 0.7s    
+
+2023-06-23 12:10:17 (1.48 MB/s) - ‘37106.txt.utf-8’ saved [1113193/1113193]
+
+hdoop@ubuntu:~/Downloads$ ls
+2701-0.txt  37106.txt.utf-8  nuevom.py  nuevor.py
+hdoop@ubuntu:~/Downloads$ nano 37106.txt.utf-8 
+hdoop@ubuntu:~/Downloads$ hadoop fs -put 2701-0.txt /tarea
+2023-06-23 12:16:18,685 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+hdoop@ubuntu:~/Downloads$ hadoop fs -put 37106.txt.utf-8 /tarea
+2023-06-23 12:16:50,211 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+hdoop@ubuntu:~/Downloads$ cd
+hdoop@ubuntu:~$ hadoop jar /home/hdoop/hadoop-3.3.5/share/hadoop/tools/lib/hadoop-streaming-3.3.5.jar -mapper /home/hdoop/Downloads/nuevom.py -reducer /home/hdoop/Downloads/nuevor.py -input /tarea/ -output /salida/
+2023-06-23 12:18:47,180 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+packageJobJar: [/tmp/hadoop-unjar3841621225282604290/] [] /tmp/streamjob7759004183356592603.jar tmpDir=null
+2023-06-23 12:18:49,427 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at /127.0.0.1:8032
+2023-06-23 12:18:50,135 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at /127.0.0.1:8032
+2023-06-23 12:18:51,006 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/hdoop/.staging/job_1687535825725_0002
+2023-06-23 12:18:52,151 INFO mapred.FileInputFormat: Total input files to process : 2
+2023-06-23 12:18:52,421 INFO mapreduce.JobSubmitter: number of splits:2
+2023-06-23 12:18:52,900 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1687535825725_0002
+2023-06-23 12:18:52,900 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2023-06-23 12:18:53,638 INFO conf.Configuration: resource-types.xml not found
+2023-06-23 12:18:53,639 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2023-06-23 12:18:53,943 INFO impl.YarnClientImpl: Submitted application application_1687535825725_0002
+2023-06-23 12:18:54,254 INFO mapreduce.Job: The url to track the job: http://ubuntu:8088/proxy/application_1687535825725_0002/
+2023-06-23 12:18:54,263 INFO mapreduce.Job: Running job: job_1687535825725_0002
+2023-06-23 12:19:10,312 INFO mapreduce.Job: Job job_1687535825725_0002 running in uber mode : false
+2023-06-23 12:19:10,315 INFO mapreduce.Job:  map 0% reduce 0%
+2023-06-23 12:19:31,259 INFO mapreduce.Job:  map 50% reduce 0%
+2023-06-23 12:19:32,385 INFO mapreduce.Job:  map 100% reduce 0%
+2023-06-23 12:19:47,674 INFO mapreduce.Job:  map 100% reduce 100%
+2023-06-23 12:19:48,713 INFO mapreduce.Job: Job job_1687535825725_0002 completed successfully
+2023-06-23 12:19:49,084 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=3961656
+		FILE: Number of bytes written=8758400
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=2389613
+		HDFS: Number of bytes written=533350
+		HDFS: Number of read operations=11
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=2
+		Launched reduce tasks=1
+		Data-local map tasks=2
+		Total time spent by all maps in occupied slots (ms)=36240
+		Total time spent by all reduces in occupied slots (ms)=12770
+		Total time spent by all map tasks (ms)=36240
+		Total time spent by all reduce tasks (ms)=12770
+		Total vcore-milliseconds taken by all map tasks=36240
+		Total vcore-milliseconds taken by all reduce tasks=12770
+		Total megabyte-milliseconds taken by all map tasks=37109760
+		Total megabyte-milliseconds taken by all reduce tasks=13076480
+	Map-Reduce Framework
+		Map input records=45157
+		Map output records=411475
+		Map output bytes=3138700
+		Map output materialized bytes=3961662
+		Input split bytes=185
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=48221
+		Reduce shuffle bytes=3961662
+		Reduce input records=411475
+		Reduce output records=48221
+		Spilled Records=822950
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=591
+		CPU time spent (ms)=11850
+		Physical memory (bytes) snapshot=860090368
+		Virtual memory (bytes) snapshot=7764643840
+		Total committed heap usage (bytes)=684195840
+		Peak Map Physical memory (bytes)=324276224
+		Peak Map Virtual memory (bytes)=2586734592
+		Peak Reduce Physical memory (bytes)=218025984
+		Peak Reduce Virtual memory (bytes)=2592530432
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=2389428
+	File Output Format Counters 
+		Bytes Written=533350
+2023-06-23 12:19:49,084 INFO streaming.StreamJob: Output directory: /salida/
+hdoop@ubuntu:~$ hadoop fs -cat /salida/part-00000| more
+2023-06-23 12:20:23,279 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+"''Tis	1
+"'A	1
+"'Ah,	1
+"'Birds	1
+"'Cabbages!'"	1
+"'Charge,	1
+"'Did	1
+"'Dis	1
+"'Finish	1
+"'Friend	1
+"'Governess,	1
+"'Handsome	1
+"'Have	1
+"'Heart's-ease	1
+"'Herein!'	1
+"'Hope	1
+"'I	4
+"'It	1
+"'JAMES	1
+"'Jo'	1
+"'Just	1
+"'Let	1
+"'Mamma	1
+"'Me	1
+"'Meg'	1
+"'Mrs.	1
+"'Not	2
+"'Now	3
+"'Now,	1
+"'Out	2
+"'Prunes	1
+"'Prut!	1
+"'So!'	1
+"'Such	1
+"'Take	1
+"'Thankee,'	1
+"'That	1
+"'Thou	1
+"'Tis	1
+"'Tisn't	1
+"'We	1
+"'What	1
+"'Yes,	1
+"'Yes;	2
+"'You	3
+"'Your	2
+"A	27
+"AMY	2
+"AN	1
+"About	2
+"Abroad!"	1
+"Accept	1
+"Ach,	2
+"Actually	1
+"Adieu;	1
+"After	4
+"Ah!	5
+"Ah,	7
+"Ahem!"	1
+"Ahs!"	1
+"Ain't	1
+"Alas!	1
+"All	11
+"All's	1
+"Allyluyer!	1
+"Alone,	1
+"Along	1
+"Am	3
+"Amy	5
+"Amy,	2
+"An	1
+cat: Unable to write to output stream.
