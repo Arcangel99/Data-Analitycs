@@ -1,0 +1,22 @@
+Parcial Transformacion y Carga de Datos Usando Pentaho:
+https://youtu.be/Fr-CPITghD0
+
+
+Parcial Servidores Vinculados en SQL Server
+https://www.youtube.com/watch?v=PbBcl0F9GnY
+
+
+Métricas y KPIs Parcial 1 Elaboración de Reportes ciclo ll 2022
+https://www.youtube.com/watch?v=0ouwsMAo9gU
+
+
+RAID 10 Y Replicación Punto a Punto en SQL Server
+https://www.youtube.com/watch?v=3am_8I6UlnM&t=1025s
+
+
+Parcial 3 Auditoria - Replicación MongoDB
+https://www.youtube.com/watch?v=c36-RkKoqe0
+
+
+PRÁCTICA #13 – Componentes de Búsqueda y Unión (PENTAHO)
+https://www.youtube.com/watch?v=CDKJZnY3bME
