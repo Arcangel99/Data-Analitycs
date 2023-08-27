@@ -1,0 +1,1534 @@
+*****************************************************************
+Nombre: Junior Efraín Franco Pérez.			*
+código: SMIM507018						*
+Carrera: Ingeniería en Manejo y Gestión de Bases de Datos.	*
+*****************************************************************
+
+
+ubuntu@LAPTOP-83QBJTTB:~$ sudo su hdoop
+[sudo] password for ubuntu:
+bash: /home/hdoop/.bashrc: line 1: unexpected EOF while looking for matching ``'
+bash: /home/hdoop/.bashrc: line 134: syntax error: unexpected end of file
+hdoop@LAPTOP-83QBJTTB:/home/ubuntu$
+hdoop@LAPTOP-83QBJTTB:/home/ubuntu$
+hdoop@LAPTOP-83QBJTTB:/home/ubuntu$ cd
+hdoop@LAPTOP-83QBJTTB:~$
+hdoop@LAPTOP-83QBJTTB:~$ ls
+apache-hive-3.1.3-bin         dfsdata       hadoop-3.3.6.tar.gz  mahout.0.14.0.tar.gz  trunk
+apache-hive-3.1.3-bin.tar.gz  hadoop-3.3.6  mahout               tmpdata
+hdoop@LAPTOP-83QBJTTB:~$ nano .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ readlink -f $(which java)
+/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+hdoop@LAPTOP-83QBJTTB:~$ nano .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ source .bashrc
+bash: .bashrc: line 1: unexpected EOF while looking for matching ``'
+bash: .bashrc: line 134: syntax error: unexpected end of file
+hdoop@LAPTOP-83QBJTTB:~$ nano .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ source .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ start-all.sh
+WARNING: Attempting to start all Apache Hadoop daemons as hdoop in 10 seconds.
+WARNING: This is not a recommended production deployment configuration.
+WARNING: Use CTRL-C to abort.
+Starting namenodes on [localhost]
+localhost: namenode is running as process 4344.  Stop it first and ensure /tmp/hadoop-hdoop-namenode.pid file is empty before retry.
+Starting datanodes
+localhost: datanode is running as process 4504.  Stop it first and ensure /tmp/hadoop-hdoop-datanode.pid file is empty before retry.
+Starting secondary namenodes [LAPTOP-83QBJTTB]
+LAPTOP-83QBJTTB: secondarynamenode is running as process 4697.  Stop it first and ensure /tmp/hadoop-hdoop-secondarynamenode.pid file is empty before retry.
+Starting resourcemanager
+resourcemanager is running as process 3396.  Stop it first and ensure /tmp/hadoop-hdoop-resourcemanager.pid file is empty before retry.
+Starting nodemanagers
+localhost: nodemanager is running as process 4983.  Stop it first and ensure /tmp/hadoop-hdoop-nodemanager.pid file is empty before retry.
+hdoop@LAPTOP-83QBJTTB:~$ jps
+3396 ResourceManager
+4983 NodeManager
+4344 NameNode
+4504 DataNode
+4697 SecondaryNameNode
+6187 Jps
+hdoop@LAPTOP-83QBJTTB:~$ wget https://www.stats.govt.nz/assets/Uploads/Births-and-deaths/Births-and-deaths-Year-ended-December-2022/Download-data/Births-and-deaths-Year-ended-December-2021-CSV.zip
+--2023-07-02 15:56:06--  https://www.stats.govt.nz/assets/Uploads/Births-and-deaths/Births-and-deaths-Year-ended-December-2022/Download-data/Births-and-deaths-Year-ended-December-2021-CSV.zip
+Resolving www.stats.govt.nz (www.stats.govt.nz)... 45.60.17.104
+Connecting to www.stats.govt.nz (www.stats.govt.nz)|45.60.17.104|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 10480 (10K) [application/zip]
+Saving to: ‘Births-and-deaths-Year-ended-December-2021-CSV.zip’
+
+Births-and-deaths-Year-ended- 100%[=================================================>]  10.23K  --.-KB/s    in 0.1s
+
+2023-07-02 15:56:08 (86.4 KB/s) - ‘Births-and-deaths-Year-ended-December-2021-CSV.zip’ saved [10480/10480]
+
+hdoop@LAPTOP-83QBJTTB:~$ wget https://www.stats.govt.nz/assets/Uploads/International-migration/International-migration-March-2023/Download-data/international-migration-March-2023-estimated-migration-by-age-sex.csv
+--2023-07-02 15:56:33--  https://www.stats.govt.nz/assets/Uploads/International-migration/International-migration-March-2023/Download-data/international-migration-March-2023-estimated-migration-by-age-sex.csv
+Resolving www.stats.govt.nz (www.stats.govt.nz)... 45.60.17.104
+Connecting to www.stats.govt.nz (www.stats.govt.nz)|45.60.17.104|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 4060268 (3.9M) [text/csv]
+Saving to: ‘international-migration-March-2023-estimated-migration-by-age-sex.csv’
+
+international-migration-March 100%[=================================================>]   3.87M   244KB/s    in 17s
+
+2023-07-02 15:56:50 (239 KB/s) - ‘international-migration-March-2023-estimated-migration-by-age-sex.csv’ saved [4060268/4060268]
+
+hdoop@LAPTOP-83QBJTTB:~$ hadoop fs -mkdir /lab2
+hdoop@LAPTOP-83QBJTTB:~$ hadoop fs -put /home/hdoop/hw_25000.csv /lab2
+put: `/home/hdoop/hw_25000.csv': No such file or directory
+hdoop@LAPTOP-83QBJTTB:~$ ls
+Births-and-deaths-Year-ended-December-2021-CSV.zip
+apache-hive-3.1.3-bin
+apache-hive-3.1.3-bin.tar.gz
+dfsdata
+hadoop-3.3.6
+hadoop-3.3.6.tar.gz
+international-migration-March-2023-estimated-migration-by-age-sex.csv
+mahout
+mahout.0.14.0.tar.gz
+tmpdata
+trunk
+hdoop@LAPTOP-83QBJTTB:~$ unzip Births-and-deaths-Year-ended-December-2021-CSV.zip
+Archive:  Births-and-deaths-Year-ended-December-2021-CSV.zip
+  inflating: bd-dec22-age-specific-fertility-rates.csv
+  inflating: bd-dec22-births-by-mothers-age.csv
+  inflating: bd-dec22-births-deaths-by-region.csv
+  inflating: bd-dec22-births-deaths-natural-increase.csv
+  inflating: bd-dec22-deaths-by-sex-and-age.csv
+hdoop@LAPTOP-83QBJTTB:~$ ls
+Births-and-deaths-Year-ended-December-2021-CSV.zip
+apache-hive-3.1.3-bin
+apache-hive-3.1.3-bin.tar.gz
+bd-dec22-age-specific-fertility-rates.csv
+bd-dec22-births-by-mothers-age.csv
+bd-dec22-births-deaths-by-region.csv
+bd-dec22-births-deaths-natural-increase.csv
+bd-dec22-deaths-by-sex-and-age.csv
+dfsdata
+hadoop-3.3.6
+hadoop-3.3.6.tar.gz
+international-migration-March-2023-estimated-migration-by-age-sex.csv
+mahout
+mahout.0.14.0.tar.gz
+tmpdata
+trunk
+hdoop@LAPTOP-83QBJTTB:~$ hadoop fs -put /home/hdoop/bd-dec22-births-deaths-by-region.csv /lab2
+hdoop@LAPTOP-83QBJTTB:~$ ls
+Births-and-deaths-Year-ended-December-2021-CSV.zip
+apache-hive-3.1.3-bin
+apache-hive-3.1.3-bin.tar.gz
+bd-dec22-age-specific-fertility-rates.csv
+bd-dec22-births-by-mothers-age.csv
+bd-dec22-births-deaths-by-region.csv
+bd-dec22-births-deaths-natural-increase.csv
+bd-dec22-deaths-by-sex-and-age.csv
+dfsdata
+hadoop-3.3.6
+hadoop-3.3.6.tar.gz
+international-migration-March-2023-estimated-migration-by-age-sex.csv
+mahout
+mahout.0.14.0.tar.gz
+tmpdata
+trunk
+hdoop@LAPTOP-83QBJTTB:~$ hadoop fs -put /home/hdoop/international-migration-March-2023-estimated-migration-by-age-sex.csv /lab2
+hdoop@LAPTOP-83QBJTTB:~$ sudo apt update
+[sudo] password for hdoop:
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates InRelease [119 kB]
+Get:3 http://security.ubuntu.com/ubuntu jammy-security InRelease [110 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease [108 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [508 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [47.7 kB]
+Fetched 893 kB in 16s (56.4 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+All packages are up to date.
+hdoop@LAPTOP-83QBJTTB:~$ sudo apt install python3 python3-pip
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+python3 is already the newest version (3.10.6-1~22.04).
+python3 set to manually installed.
+The following additional packages will be installed:
+  build-essential bzip2 cpp cpp-11 dpkg-dev fakeroot g++ g++-11 gcc gcc-11 gcc-11-base javascript-common
+  libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libatomic1 libc-dev-bin
+  libc-devtools libc6-dev libcc1-0 libcrypt-dev libdpkg-perl libexpat1-dev libfakeroot libfile-fcntllock-perl
+  libgcc-11-dev libgd3 libgomp1 libisl23 libitm1 libjs-jquery libjs-sphinxdoc libjs-underscore liblsan0 libmpc3
+  libnsl-dev libpython3-dev libpython3.10-dev libquadmath0 libstdc++-11-dev libtirpc-dev libtsan0 libubsan1
+  linux-libc-dev lto-disabled-list make manpages-dev python3-dev python3-distutils python3-lib2to3 python3-setuptools
+  python3-wheel python3.10-dev rpcsvc-proto zlib1g-dev
+Suggested packages:
+  bzip2-doc cpp-doc gcc-11-locales debian-keyring g++-multilib g++-11-multilib gcc-11-doc gcc-multilib autoconf
+  automake libtool flex bison gdb gcc-doc gcc-11-multilib apache2 | lighttpd | httpd glibc-doc bzr libgd-tools
+  libstdc++-11-doc make-doc python-setuptools-doc
+The following NEW packages will be installed:
+  build-essential bzip2 cpp cpp-11 dpkg-dev fakeroot g++ g++-11 gcc gcc-11 gcc-11-base javascript-common
+  libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl libasan6 libatomic1 libc-dev-bin
+  libc-devtools libc6-dev libcc1-0 libcrypt-dev libdpkg-perl libexpat1-dev libfakeroot libfile-fcntllock-perl
+  libgcc-11-dev libgd3 libgomp1 libisl23 libitm1 libjs-jquery libjs-sphinxdoc libjs-underscore liblsan0 libmpc3
+  libnsl-dev libpython3-dev libpython3.10-dev libquadmath0 libstdc++-11-dev libtirpc-dev libtsan0 libubsan1
+  linux-libc-dev lto-disabled-list make manpages-dev python3-dev python3-distutils python3-lib2to3 python3-pip
+  python3-setuptools python3-wheel python3.10-dev rpcsvc-proto zlib1g-dev
+0 upgraded, 57 newly installed, 0 to remove and 0 not upgraded.
+Need to get 69.9 MB of archives.
+After this operation, 236 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-dev-bin amd64 2.35-0ubuntu3.1 [20.4 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 linux-libc-dev amd64 5.15.0-76.83 [1306 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/main amd64 libcrypt-dev amd64 1:4.4.27-1 [112 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/main amd64 rpcsvc-proto amd64 1.4.2-0ubuntu6 [68.5 kB]
+Get:5 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtirpc-dev amd64 1.3.2-2ubuntu0.1 [192 kB]
+Get:6 http://archive.ubuntu.com/ubuntu jammy/main amd64 libnsl-dev amd64 1.3.0-2build2 [71.3 kB]
+Get:7 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc6-dev amd64 2.35-0ubuntu3.1 [2099 kB]
+Get:8 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11-base amd64 11.3.0-1ubuntu1~22.04.1 [20.9 kB]
+Get:9 http://archive.ubuntu.com/ubuntu jammy/main amd64 libisl23 amd64 0.24-2build1 [727 kB]
+Get:10 http://archive.ubuntu.com/ubuntu jammy/main amd64 libmpc3 amd64 1.2.1-2build1 [46.9 kB]
+Get:11 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 cpp-11 amd64 11.3.0-1ubuntu1~22.04.1 [9968 kB]
+Get:12 http://archive.ubuntu.com/ubuntu jammy/main amd64 cpp amd64 4:11.2.0-1ubuntu1 [27.7 kB]
+Get:13 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libcc1-0 amd64 12.1.0-2ubuntu1~22.04 [47.4 kB]
+Get:14 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgomp1 amd64 12.1.0-2ubuntu1~22.04 [126 kB]
+Get:15 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libitm1 amd64 12.1.0-2ubuntu1~22.04 [30.2 kB]
+Get:16 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libatomic1 amd64 12.1.0-2ubuntu1~22.04 [10.4 kB]
+Get:17 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libasan6 amd64 11.3.0-1ubuntu1~22.04.1 [2284 kB]
+Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 liblsan0 amd64 12.1.0-2ubuntu1~22.04 [1069 kB]
+Get:19 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libtsan0 amd64 11.3.0-1ubuntu1~22.04.1 [2260 kB]
+Get:20 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libubsan1 amd64 12.1.0-2ubuntu1~22.04 [976 kB]
+Get:21 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libquadmath0 amd64 12.1.0-2ubuntu1~22.04 [154 kB]
+Get:22 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libgcc-11-dev amd64 11.3.0-1ubuntu1~22.04.1 [2516 kB]
+Get:23 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 gcc-11 amd64 11.3.0-1ubuntu1~22.04.1 [20.1 MB]
+Get:24 http://archive.ubuntu.com/ubuntu jammy/main amd64 gcc amd64 4:11.2.0-1ubuntu1 [5112 B]
+Get:25 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libstdc++-11-dev amd64 11.3.0-1ubuntu1~22.04.1 [2087 kB]
+Get:26 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 g++-11 amd64 11.3.0-1ubuntu1~22.04.1 [11.4 MB]
+Get:27 http://archive.ubuntu.com/ubuntu jammy/main amd64 g++ amd64 4:11.2.0-1ubuntu1 [1412 B]
+Get:28 http://archive.ubuntu.com/ubuntu jammy/main amd64 make amd64 4.3-4.1build1 [180 kB]
+Get:29 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libdpkg-perl all 1.21.1ubuntu2.2 [237 kB]
+Get:30 http://archive.ubuntu.com/ubuntu jammy/main amd64 bzip2 amd64 1.0.8-5build1 [34.8 kB]
+Get:31 http://archive.ubuntu.com/ubuntu jammy/main amd64 lto-disabled-list all 24 [12.5 kB]
+Get:32 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 dpkg-dev all 1.21.1ubuntu2.2 [922 kB]
+Get:33 http://archive.ubuntu.com/ubuntu jammy/main amd64 build-essential amd64 12.9ubuntu3 [4744 B]
+Get:34 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfakeroot amd64 1.28-1ubuntu1 [31.5 kB]
+Get:35 http://archive.ubuntu.com/ubuntu jammy/main amd64 fakeroot amd64 1.28-1ubuntu1 [60.4 kB]
+Get:36 http://archive.ubuntu.com/ubuntu jammy/main amd64 javascript-common all 11+nmu1 [5936 B]
+Get:37 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-perl all 1.201-1 [41.8 kB]
+Get:38 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-diff-xs-perl amd64 0.04-6build3 [11.9 kB]
+Get:39 http://archive.ubuntu.com/ubuntu jammy/main amd64 libalgorithm-merge-perl all 0.08-3 [12.0 kB]
+Get:40 http://archive.ubuntu.com/ubuntu jammy/main amd64 libgd3 amd64 2.3.0-2ubuntu2 [129 kB]
+Get:41 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libc-devtools amd64 2.35-0ubuntu3.1 [28.9 kB]
+Get:42 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libexpat1-dev amd64 2.4.7-1ubuntu0.2 [147 kB]
+Get:43 http://archive.ubuntu.com/ubuntu jammy/main amd64 libfile-fcntllock-perl amd64 0.22-3build7 [33.9 kB]
+Get:44 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-jquery all 3.6.0+dfsg+~3.5.13-1 [321 kB]
+Get:45 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-underscore all 1.13.2~dfsg-2 [118 kB]
+Get:46 http://archive.ubuntu.com/ubuntu jammy/main amd64 libjs-sphinxdoc all 4.3.2-1 [139 kB]
+Get:47 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 zlib1g-dev amd64 1:1.2.11.dfsg-2ubuntu9.2 [164 kB]
+Get:48 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3.10-dev amd64 3.10.6-1~22.04.2ubuntu1.1 [4754 kB]
+Get:49 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpython3-dev amd64 3.10.6-1~22.04 [7166 B]
+Get:50 http://archive.ubuntu.com/ubuntu jammy/main amd64 manpages-dev all 5.10-1ubuntu1 [2309 kB]
+Get:51 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3.10-dev amd64 3.10.6-1~22.04.2ubuntu1.1 [507 kB]
+Get:52 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-lib2to3 all 3.10.6-1~22.04 [77.6 kB]
+Get:53 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-distutils all 3.10.6-1~22.04 [139 kB]
+Get:54 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-dev amd64 3.10.6-1~22.04 [26.0 kB]
+Get:55 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 python3-setuptools all 59.6.0-1.2ubuntu0.22.04.1 [339 kB]
+Get:56 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-wheel all 0.37.1-2ubuntu0.22.04.1 [32.0 kB]
+Get:57 http://archive.ubuntu.com/ubuntu jammy-updates/universe amd64 python3-pip all 22.0.2+dfsg-1ubuntu0.3 [1305 kB]
+Fetched 69.9 MB in 4min 35s (254 kB/s)
+Extracting templates from packages: 100%
+Selecting previously unselected package libc-dev-bin.
+(Reading database ... 44322 files and directories currently installed.)
+Preparing to unpack .../00-libc-dev-bin_2.35-0ubuntu3.1_amd64.deb ...
+Unpacking libc-dev-bin (2.35-0ubuntu3.1) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../01-linux-libc-dev_5.15.0-76.83_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (5.15.0-76.83) ...
+Selecting previously unselected package libcrypt-dev:amd64.
+Preparing to unpack .../02-libcrypt-dev_1%3a4.4.27-1_amd64.deb ...
+Unpacking libcrypt-dev:amd64 (1:4.4.27-1) ...
+Selecting previously unselected package rpcsvc-proto.
+Preparing to unpack .../03-rpcsvc-proto_1.4.2-0ubuntu6_amd64.deb ...
+Unpacking rpcsvc-proto (1.4.2-0ubuntu6) ...
+Selecting previously unselected package libtirpc-dev:amd64.
+Preparing to unpack .../04-libtirpc-dev_1.3.2-2ubuntu0.1_amd64.deb ...
+Unpacking libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Selecting previously unselected package libnsl-dev:amd64.
+Preparing to unpack .../05-libnsl-dev_1.3.0-2build2_amd64.deb ...
+Unpacking libnsl-dev:amd64 (1.3.0-2build2) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../06-libc6-dev_2.35-0ubuntu3.1_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.35-0ubuntu3.1) ...
+Selecting previously unselected package gcc-11-base:amd64.
+Preparing to unpack .../07-gcc-11-base_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking gcc-11-base:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package libisl23:amd64.
+Preparing to unpack .../08-libisl23_0.24-2build1_amd64.deb ...
+Unpacking libisl23:amd64 (0.24-2build1) ...
+Selecting previously unselected package libmpc3:amd64.
+Preparing to unpack .../09-libmpc3_1.2.1-2build1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.2.1-2build1) ...
+Selecting previously unselected package cpp-11.
+Preparing to unpack .../10-cpp-11_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking cpp-11 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../11-cpp_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking cpp (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package libcc1-0:amd64.
+Preparing to unpack .../12-libcc1-0_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libcc1-0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libgomp1:amd64.
+Preparing to unpack .../13-libgomp1_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libgomp1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../14-libitm1_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libitm1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../15-libatomic1_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libatomic1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libasan6:amd64.
+Preparing to unpack .../16-libasan6_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking libasan6:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package liblsan0:amd64.
+Preparing to unpack .../17-liblsan0_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking liblsan0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../18-libtsan0_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking libtsan0:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package libubsan1:amd64.
+Preparing to unpack .../19-libubsan1_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libubsan1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../20-libquadmath0_12.1.0-2ubuntu1~22.04_amd64.deb ...
+Unpacking libquadmath0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Selecting previously unselected package libgcc-11-dev:amd64.
+Preparing to unpack .../21-libgcc-11-dev_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking libgcc-11-dev:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package gcc-11.
+Preparing to unpack .../22-gcc-11_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking gcc-11 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../23-gcc_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking gcc (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package libstdc++-11-dev:amd64.
+Preparing to unpack .../24-libstdc++-11-dev_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking libstdc++-11-dev:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package g++-11.
+Preparing to unpack .../25-g++-11_11.3.0-1ubuntu1~22.04.1_amd64.deb ...
+Unpacking g++-11 (11.3.0-1ubuntu1~22.04.1) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../26-g++_4%3a11.2.0-1ubuntu1_amd64.deb ...
+Unpacking g++ (4:11.2.0-1ubuntu1) ...
+Selecting previously unselected package make.
+Preparing to unpack .../27-make_4.3-4.1build1_amd64.deb ...
+Unpacking make (4.3-4.1build1) ...
+Selecting previously unselected package libdpkg-perl.
+Preparing to unpack .../28-libdpkg-perl_1.21.1ubuntu2.2_all.deb ...
+Unpacking libdpkg-perl (1.21.1ubuntu2.2) ...
+Selecting previously unselected package bzip2.
+Preparing to unpack .../29-bzip2_1.0.8-5build1_amd64.deb ...
+Unpacking bzip2 (1.0.8-5build1) ...
+Selecting previously unselected package lto-disabled-list.
+Preparing to unpack .../30-lto-disabled-list_24_all.deb ...
+Unpacking lto-disabled-list (24) ...
+Selecting previously unselected package dpkg-dev.
+Preparing to unpack .../31-dpkg-dev_1.21.1ubuntu2.2_all.deb ...
+Unpacking dpkg-dev (1.21.1ubuntu2.2) ...
+Selecting previously unselected package build-essential.
+Preparing to unpack .../32-build-essential_12.9ubuntu3_amd64.deb ...
+Unpacking build-essential (12.9ubuntu3) ...
+Selecting previously unselected package libfakeroot:amd64.
+Preparing to unpack .../33-libfakeroot_1.28-1ubuntu1_amd64.deb ...
+Unpacking libfakeroot:amd64 (1.28-1ubuntu1) ...
+Selecting previously unselected package fakeroot.
+Preparing to unpack .../34-fakeroot_1.28-1ubuntu1_amd64.deb ...
+Unpacking fakeroot (1.28-1ubuntu1) ...
+Selecting previously unselected package javascript-common.
+Preparing to unpack .../35-javascript-common_11+nmu1_all.deb ...
+Unpacking javascript-common (11+nmu1) ...
+Selecting previously unselected package libalgorithm-diff-perl.
+Preparing to unpack .../36-libalgorithm-diff-perl_1.201-1_all.deb ...
+Unpacking libalgorithm-diff-perl (1.201-1) ...
+Selecting previously unselected package libalgorithm-diff-xs-perl.
+Preparing to unpack .../37-libalgorithm-diff-xs-perl_0.04-6build3_amd64.deb ...
+Unpacking libalgorithm-diff-xs-perl (0.04-6build3) ...
+Selecting previously unselected package libalgorithm-merge-perl.
+Preparing to unpack .../38-libalgorithm-merge-perl_0.08-3_all.deb ...
+Unpacking libalgorithm-merge-perl (0.08-3) ...
+Selecting previously unselected package libgd3:amd64.
+Preparing to unpack .../39-libgd3_2.3.0-2ubuntu2_amd64.deb ...
+Unpacking libgd3:amd64 (2.3.0-2ubuntu2) ...
+Selecting previously unselected package libc-devtools.
+Preparing to unpack .../40-libc-devtools_2.35-0ubuntu3.1_amd64.deb ...
+Unpacking libc-devtools (2.35-0ubuntu3.1) ...
+Selecting previously unselected package libexpat1-dev:amd64.
+Preparing to unpack .../41-libexpat1-dev_2.4.7-1ubuntu0.2_amd64.deb ...
+Unpacking libexpat1-dev:amd64 (2.4.7-1ubuntu0.2) ...
+Selecting previously unselected package libfile-fcntllock-perl.
+Preparing to unpack .../42-libfile-fcntllock-perl_0.22-3build7_amd64.deb ...
+Unpacking libfile-fcntllock-perl (0.22-3build7) ...
+Selecting previously unselected package libjs-jquery.
+Preparing to unpack .../43-libjs-jquery_3.6.0+dfsg+~3.5.13-1_all.deb ...
+Unpacking libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Selecting previously unselected package libjs-underscore.
+Preparing to unpack .../44-libjs-underscore_1.13.2~dfsg-2_all.deb ...
+Unpacking libjs-underscore (1.13.2~dfsg-2) ...
+Selecting previously unselected package libjs-sphinxdoc.
+Preparing to unpack .../45-libjs-sphinxdoc_4.3.2-1_all.deb ...
+Unpacking libjs-sphinxdoc (4.3.2-1) ...
+Selecting previously unselected package zlib1g-dev:amd64.
+Preparing to unpack .../46-zlib1g-dev_1%3a1.2.11.dfsg-2ubuntu9.2_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Selecting previously unselected package libpython3.10-dev:amd64.
+Preparing to unpack .../47-libpython3.10-dev_3.10.6-1~22.04.2ubuntu1.1_amd64.deb ...
+Unpacking libpython3.10-dev:amd64 (3.10.6-1~22.04.2ubuntu1.1) ...
+Selecting previously unselected package libpython3-dev:amd64.
+Preparing to unpack .../48-libpython3-dev_3.10.6-1~22.04_amd64.deb ...
+Unpacking libpython3-dev:amd64 (3.10.6-1~22.04) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../49-manpages-dev_5.10-1ubuntu1_all.deb ...
+Unpacking manpages-dev (5.10-1ubuntu1) ...
+Selecting previously unselected package python3.10-dev.
+Preparing to unpack .../50-python3.10-dev_3.10.6-1~22.04.2ubuntu1.1_amd64.deb ...
+Unpacking python3.10-dev (3.10.6-1~22.04.2ubuntu1.1) ...
+Selecting previously unselected package python3-lib2to3.
+Preparing to unpack .../51-python3-lib2to3_3.10.6-1~22.04_all.deb ...
+Unpacking python3-lib2to3 (3.10.6-1~22.04) ...
+Selecting previously unselected package python3-distutils.
+Preparing to unpack .../52-python3-distutils_3.10.6-1~22.04_all.deb ...
+Unpacking python3-distutils (3.10.6-1~22.04) ...
+Selecting previously unselected package python3-dev.
+Preparing to unpack .../53-python3-dev_3.10.6-1~22.04_amd64.deb ...
+Unpacking python3-dev (3.10.6-1~22.04) ...
+Selecting previously unselected package python3-setuptools.
+Preparing to unpack .../54-python3-setuptools_59.6.0-1.2ubuntu0.22.04.1_all.deb ...
+Unpacking python3-setuptools (59.6.0-1.2ubuntu0.22.04.1) ...
+Selecting previously unselected package python3-wheel.
+Preparing to unpack .../55-python3-wheel_0.37.1-2ubuntu0.22.04.1_all.deb ...
+Unpacking python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Selecting previously unselected package python3-pip.
+Preparing to unpack .../56-python3-pip_22.0.2+dfsg-1ubuntu0.3_all.deb ...
+Unpacking python3-pip (22.0.2+dfsg-1ubuntu0.3) ...
+Setting up javascript-common (11+nmu1) ...
+Setting up gcc-11-base:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up manpages-dev (5.10-1ubuntu1) ...
+Setting up lto-disabled-list (24) ...
+Setting up libfile-fcntllock-perl (0.22-3build7) ...
+Setting up libalgorithm-diff-perl (1.201-1) ...
+Setting up linux-libc-dev:amd64 (5.15.0-76.83) ...
+Setting up libgomp1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up bzip2 (1.0.8-5build1) ...
+Setting up libfakeroot:amd64 (1.28-1ubuntu1) ...
+Setting up libasan6:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up fakeroot (1.28-1ubuntu1) ...
+update-alternatives: using /usr/bin/fakeroot-sysv to provide /usr/bin/fakeroot (fakeroot) in auto mode
+Setting up libtirpc-dev:amd64 (1.3.2-2ubuntu0.1) ...
+Setting up rpcsvc-proto (1.4.2-0ubuntu6) ...
+Setting up make (4.3-4.1build1) ...
+Setting up libquadmath0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up libgd3:amd64 (2.3.0-2ubuntu2) ...
+Setting up libmpc3:amd64 (1.2.1-2build1) ...
+Setting up libatomic1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up libdpkg-perl (1.21.1ubuntu2.2) ...
+Setting up libubsan1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up libnsl-dev:amd64 (1.3.0-2build2) ...
+Setting up libcrypt-dev:amd64 (1:4.4.27-1) ...
+Setting up libjs-jquery (3.6.0+dfsg+~3.5.13-1) ...
+Setting up libisl23:amd64 (0.24-2build1) ...
+Setting up libc-dev-bin (2.35-0ubuntu3.1) ...
+Setting up python3-lib2to3 (3.10.6-1~22.04) ...
+Setting up libalgorithm-diff-xs-perl (0.04-6build3) ...
+Setting up libcc1-0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up liblsan0:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up libitm1:amd64 (12.1.0-2ubuntu1~22.04) ...
+Setting up libc-devtools (2.35-0ubuntu3.1) ...
+Setting up libjs-underscore (1.13.2~dfsg-2) ...
+Setting up libalgorithm-merge-perl (0.08-3) ...
+Setting up libtsan0:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up python3-distutils (3.10.6-1~22.04) ...
+Setting up cpp-11 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up python3-setuptools (59.6.0-1.2ubuntu0.22.04.1) ...
+Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...
+Setting up dpkg-dev (1.21.1ubuntu2.2) ...
+Setting up python3-pip (22.0.2+dfsg-1ubuntu0.3) ...
+Setting up libjs-sphinxdoc (4.3.2-1) ...
+Setting up libgcc-11-dev:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up gcc-11 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up cpp (4:11.2.0-1ubuntu1) ...
+Setting up libc6-dev:amd64 (2.35-0ubuntu3.1) ...
+Setting up gcc (4:11.2.0-1ubuntu1) ...
+Setting up libexpat1-dev:amd64 (2.4.7-1ubuntu0.2) ...
+Setting up libstdc++-11-dev:amd64 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up zlib1g-dev:amd64 (1:1.2.11.dfsg-2ubuntu9.2) ...
+Setting up g++-11 (11.3.0-1ubuntu1~22.04.1) ...
+Setting up libpython3.10-dev:amd64 (3.10.6-1~22.04.2ubuntu1.1) ...
+Setting up python3.10-dev (3.10.6-1~22.04.2ubuntu1.1) ...
+Setting up g++ (4:11.2.0-1ubuntu1) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
+Setting up build-essential (12.9ubuntu3) ...
+Setting up libpython3-dev:amd64 (3.10.6-1~22.04) ...
+Setting up python3-dev (3.10.6-1~22.04) ...
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.1) ...
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install jupyter
+Defaulting to user installation because normal site-packages is not writeable
+Collecting jupyter
+  Downloading jupyter-1.0.0-py2.py3-none-any.whl (2.7 kB)
+Collecting ipykernel
+  Downloading ipykernel-6.23.3-py3-none-any.whl (152 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 152.8/152.8 KB 590.5 kB/s eta 0:00:00
+Collecting nbconvert
+  Downloading nbconvert-7.6.0-py3-none-any.whl (290 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 290.4/290.4 KB 948.2 kB/s eta 0:00:00
+Collecting ipywidgets
+  Downloading ipywidgets-8.0.6-py3-none-any.whl (138 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 138.3/138.3 KB 277.4 kB/s eta 0:00:00
+Collecting notebook
+  Downloading notebook-6.5.4-py3-none-any.whl (529 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 529.8/529.8 KB 550.1 kB/s eta 0:00:00
+Collecting jupyter-console
+  Downloading jupyter_console-6.6.3-py3-none-any.whl (24 kB)
+Collecting qtconsole
+  Downloading qtconsole-5.4.3-py3-none-any.whl (121 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 121.9/121.9 KB 1.0 MB/s eta 0:00:00
+Collecting packaging
+  Downloading packaging-23.1-py3-none-any.whl (48 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.9/48.9 KB 2.1 MB/s eta 0:00:00
+Collecting psutil
+  Downloading psutil-5.9.5-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (282 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 282.1/282.1 KB 440.3 kB/s eta 0:00:00
+Collecting jupyter-client>=6.1.12
+  Downloading jupyter_client-8.3.0-py3-none-any.whl (103 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 103.2/103.2 KB 521.5 kB/s eta 0:00:00
+Collecting debugpy>=1.6.5
+  Downloading debugpy-1.6.7-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 470.4 kB/s eta 0:00:00
+Collecting ipython>=7.23.1
+  Downloading ipython-8.14.0-py3-none-any.whl (798 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 798.7/798.7 KB 436.6 kB/s eta 0:00:00
+Collecting tornado>=6.1
+  Downloading tornado-6.3.2-cp38-abi3-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (426 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 426.9/426.9 KB 377.1 kB/s eta 0:00:00
+Collecting pyzmq>=20
+  Downloading pyzmq-25.1.0-cp310-cp310-manylinux_2_28_x86_64.whl (1.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 383.7 kB/s eta 0:00:00
+Collecting nest-asyncio
+  Downloading nest_asyncio-1.5.6-py3-none-any.whl (5.2 kB)
+Collecting comm>=0.1.1
+  Downloading comm-0.1.3-py3-none-any.whl (6.6 kB)
+Collecting traitlets>=5.4.0
+  Downloading traitlets-5.9.0-py3-none-any.whl (117 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 117.4/117.4 KB 433.9 kB/s eta 0:00:00
+Collecting jupyter-core!=5.0.*,>=4.12
+  Downloading jupyter_core-5.3.1-py3-none-any.whl (93 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 93.7/93.7 KB 745.3 kB/s eta 0:00:00
+Collecting matplotlib-inline>=0.1
+  Downloading matplotlib_inline-0.1.6-py3-none-any.whl (9.4 kB)
+Collecting jupyterlab-widgets~=3.0.7
+  Downloading jupyterlab_widgets-3.0.7-py3-none-any.whl (198 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 198.2/198.2 KB 562.0 kB/s eta 0:00:00
+Collecting widgetsnbextension~=4.0.7
+  Downloading widgetsnbextension-4.0.7-py3-none-any.whl (2.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 279.9 kB/s eta 0:00:00
+Collecting prompt-toolkit>=3.0.30
+  Downloading prompt_toolkit-3.0.38-py3-none-any.whl (385 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 385.8/385.8 KB 437.0 kB/s eta 0:00:00
+Collecting pygments
+  Downloading Pygments-2.15.1-py3-none-any.whl (1.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 454.2 kB/s eta 0:00:00
+Collecting markupsafe>=2.0
+  Downloading MarkupSafe-2.1.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (25 kB)
+Collecting pandocfilters>=1.4.1
+  Downloading pandocfilters-1.5.0-py2.py3-none-any.whl (8.7 kB)
+Collecting bleach!=5.0.0
+  Downloading bleach-6.0.0-py3-none-any.whl (162 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 162.5/162.5 KB 508.1 kB/s eta 0:00:00
+Collecting tinycss2
+  Downloading tinycss2-1.2.1-py3-none-any.whl (21 kB)
+Collecting mistune<4,>=2.0.3
+  Downloading mistune-3.0.1-py3-none-any.whl (47 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.0/48.0 KB 455.2 kB/s eta 0:00:00
+Collecting nbformat>=5.7
+  Downloading nbformat-5.9.0-py3-none-any.whl (77 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.6/77.6 KB 269.7 kB/s eta 0:00:00
+Collecting jupyterlab-pygments
+  Downloading jupyterlab_pygments-0.2.2-py2.py3-none-any.whl (21 kB)
+Collecting jinja2>=3.0
+  Downloading Jinja2-3.1.2-py3-none-any.whl (133 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.1/133.1 KB 637.2 kB/s eta 0:00:00
+Collecting nbclient>=0.5.0
+  Downloading nbclient-0.8.0-py3-none-any.whl (73 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 KB 600.1 kB/s eta 0:00:00
+Collecting defusedxml
+  Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+Collecting beautifulsoup4
+  Downloading beautifulsoup4-4.12.2-py3-none-any.whl (142 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 143.0/143.0 KB 623.1 kB/s eta 0:00:00
+Collecting argon2-cffi
+  Downloading argon2_cffi-21.3.0-py3-none-any.whl (14 kB)
+Collecting terminado>=0.8.3
+  Downloading terminado-0.17.1-py3-none-any.whl (17 kB)
+Collecting Send2Trash>=1.8.0
+  Downloading Send2Trash-1.8.2-py3-none-any.whl (18 kB)
+Collecting prometheus-client
+  Downloading prometheus_client-0.17.0-py3-none-any.whl (60 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.6/60.6 KB 642.3 kB/s eta 0:00:00
+Collecting nbclassic>=0.4.7
+  Downloading nbclassic-1.0.0-py3-none-any.whl (10.0 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.0/10.0 MB 507.5 kB/s eta 0:00:00
+Collecting ipython-genutils
+  Downloading ipython_genutils-0.2.0-py2.py3-none-any.whl (26 kB)
+Collecting qtpy>=2.0.1
+  Downloading QtPy-2.3.1-py3-none-any.whl (84 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.9/84.9 KB 918.2 kB/s eta 0:00:00
+Collecting webencodings
+  Downloading webencodings-0.5.1-py2.py3-none-any.whl (11 kB)
+Requirement already satisfied: six>=1.9.0 in /usr/lib/python3/dist-packages (from bleach!=5.0.0->nbconvert->jupyter) (1.16.0)
+Collecting decorator
+  Downloading decorator-5.1.1-py3-none-any.whl (9.1 kB)
+Collecting backcall
+  Downloading backcall-0.2.0-py2.py3-none-any.whl (11 kB)
+Collecting pickleshare
+  Downloading pickleshare-0.7.5-py2.py3-none-any.whl (6.9 kB)
+Collecting pexpect>4.3
+  Downloading pexpect-4.8.0-py2.py3-none-any.whl (59 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.0/59.0 KB 493.2 kB/s eta 0:00:00
+Collecting jedi>=0.16
+  Downloading jedi-0.18.2-py2.py3-none-any.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 367.7 kB/s eta 0:00:00
+Collecting stack-data
+  Downloading stack_data-0.6.2-py3-none-any.whl (24 kB)
+Collecting python-dateutil>=2.8.2
+  Downloading python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 247.7/247.7 KB 361.8 kB/s eta 0:00:00
+Collecting platformdirs>=2.5
+  Downloading platformdirs-3.8.0-py3-none-any.whl (16 kB)
+Collecting notebook-shim>=0.2.3
+  Downloading notebook_shim-0.2.3-py3-none-any.whl (13 kB)
+Collecting jupyter-server>=1.8
+  Downloading jupyter_server-2.7.0-py3-none-any.whl (375 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 375.1/375.1 KB 302.8 kB/s eta 0:00:00
+Collecting fastjsonschema
+  Downloading fastjsonschema-2.17.1-py3-none-any.whl (23 kB)
+Collecting jsonschema>=2.6
+  Downloading jsonschema-4.17.3-py3-none-any.whl (90 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.4/90.4 KB 261.8 kB/s eta 0:00:00
+Collecting wcwidth
+  Downloading wcwidth-0.2.6-py2.py3-none-any.whl (29 kB)
+Collecting ptyprocess
+  Downloading ptyprocess-0.7.0-py2.py3-none-any.whl (13 kB)
+Collecting argon2-cffi-bindings
+  Downloading argon2_cffi_bindings-21.2.0-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (86 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 86.2/86.2 KB 205.2 kB/s eta 0:00:00
+Collecting soupsieve>1.2
+  Downloading soupsieve-2.4.1-py3-none-any.whl (36 kB)
+Collecting parso<0.9.0,>=0.8.0
+  Downloading parso-0.8.3-py2.py3-none-any.whl (100 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.8/100.8 KB 361.1 kB/s eta 0:00:00
+Collecting attrs>=17.4.0
+  Downloading attrs-23.1.0-py3-none-any.whl (61 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.2/61.2 KB 130.2 kB/s eta 0:00:00
+Collecting pyrsistent!=0.17.0,!=0.17.1,!=0.17.2,>=0.14.0
+  Downloading pyrsistent-0.19.3-py3-none-any.whl (57 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.5/57.5 KB 240.9 kB/s eta 0:00:00
+Collecting overrides
+  Downloading overrides-7.3.1-py3-none-any.whl (17 kB)
+Collecting anyio>=3.1.0
+  Downloading anyio-3.7.0-py3-none-any.whl (80 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 80.9/80.9 KB 360.7 kB/s eta 0:00:00
+Collecting jupyter-events>=0.6.0
+  Downloading jupyter_events-0.6.3-py3-none-any.whl (18 kB)
+Collecting websocket-client
+  Downloading websocket_client-1.6.1-py3-none-any.whl (56 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.9/56.9 KB 306.9 kB/s eta 0:00:00
+Collecting jupyter-server-terminals
+  Downloading jupyter_server_terminals-0.4.4-py3-none-any.whl (13 kB)
+Collecting cffi>=1.0.1
+  Downloading cffi-1.15.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (441 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 441.8/441.8 KB 339.1 kB/s eta 0:00:00
+Collecting executing>=1.2.0
+  Downloading executing-1.2.0-py2.py3-none-any.whl (24 kB)
+Collecting pure-eval
+  Downloading pure_eval-0.2.2-py3-none-any.whl (11 kB)
+Collecting asttokens>=2.1.0
+  Downloading asttokens-2.2.1-py2.py3-none-any.whl (26 kB)
+Collecting exceptiongroup
+  Downloading exceptiongroup-1.1.1-py3-none-any.whl (14 kB)
+Collecting sniffio>=1.1
+  Downloading sniffio-1.3.0-py3-none-any.whl (10 kB)
+Collecting idna>=2.8
+  Downloading idna-3.4-py3-none-any.whl (61 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.5/61.5 KB 270.0 kB/s eta 0:00:00
+Collecting pycparser
+  Downloading pycparser-2.21-py2.py3-none-any.whl (118 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 118.7/118.7 KB 302.9 kB/s eta 0:00:00
+Collecting rfc3986-validator>=0.1.1
+  Downloading rfc3986_validator-0.1.1-py2.py3-none-any.whl (4.2 kB)
+Collecting python-json-logger>=2.0.4
+  Downloading python_json_logger-2.0.7-py3-none-any.whl (8.1 kB)
+Collecting rfc3339-validator
+  Downloading rfc3339_validator-0.1.4-py2.py3-none-any.whl (3.5 kB)
+Requirement already satisfied: pyyaml>=5.3 in /usr/lib/python3/dist-packages (from jupyter-events>=0.6.0->jupyter-server>=1.8->nbclassic>=0.4.7->notebook->jupyter) (5.4.1)
+Collecting jsonpointer>1.13
+  Downloading jsonpointer-2.4-py2.py3-none-any.whl (7.8 kB)
+Collecting webcolors>=1.11
+  Downloading webcolors-1.13-py3-none-any.whl (14 kB)
+Collecting isoduration
+  Downloading isoduration-20.11.0-py3-none-any.whl (11 kB)
+Collecting fqdn
+  Downloading fqdn-1.5.1-py3-none-any.whl (9.1 kB)
+Collecting uri-template
+  Downloading uri_template-1.3.0-py3-none-any.whl (11 kB)
+Collecting arrow>=0.15.0
+  Downloading arrow-1.2.3-py3-none-any.whl (66 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.4/66.4 KB 438.3 kB/s eta 0:00:00
+Installing collected packages: webencodings, wcwidth, pure-eval, ptyprocess, pickleshare, ipython-genutils, fastjsonschema, executing, backcall, widgetsnbextension, websocket-client, webcolors, uri-template, traitlets, tornado, tinycss2, soupsieve, sniffio, Send2Trash, rfc3986-validator, rfc3339-validator, pyzmq, python-json-logger, python-dateutil, pyrsistent, pygments, pycparser, psutil, prompt-toolkit, prometheus-client, platformdirs, pexpect, parso, pandocfilters, packaging, overrides, nest-asyncio, mistune, markupsafe, jupyterlab-widgets, jupyterlab-pygments, jsonpointer, idna, fqdn, exceptiongroup, defusedxml, decorator, debugpy, bleach, attrs, asttokens, terminado, stack-data, qtpy, matplotlib-inline, jupyter-core, jsonschema, jinja2, jedi, comm, cffi, beautifulsoup4, arrow, anyio, nbformat, jupyter-server-terminals, jupyter-client, isoduration, ipython, argon2-cffi-bindings, nbclient, ipykernel, argon2-cffi, qtconsole, nbconvert, jupyter-events, jupyter-console, ipywidgets, jupyter-server, notebook-shim, nbclassic, notebook, jupyter
+  WARNING: The script wsdump is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script send2trash is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script pygmentize is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script qtpy is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts jupyter, jupyter-migrate and jupyter-troubleshoot are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jsonschema is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jupyter-trust is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts jupyter-kernel, jupyter-kernelspec and jupyter-run are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts ipython and ipython3 are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jupyter-execute is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts jupyter-dejavu and jupyter-nbconvert are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jupyter-events is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jupyter-console is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The script jupyter-server is installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts jupyter-nbclassic, jupyter-nbclassic-bundlerextension, jupyter-nbclassic-extension and jupyter-nbclassic-serverextension are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+  WARNING: The scripts jupyter-bundlerextension, jupyter-nbextension, jupyter-notebook and jupyter-serverextension are installed in '/home/hdoop/.local/bin' which is not on PATH.
+  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+Successfully installed Send2Trash-1.8.2 anyio-3.7.0 argon2-cffi-21.3.0 argon2-cffi-bindings-21.2.0 arrow-1.2.3 asttokens-2.2.1 attrs-23.1.0 backcall-0.2.0 beautifulsoup4-4.12.2 bleach-6.0.0 cffi-1.15.1 comm-0.1.3 debugpy-1.6.7 decorator-5.1.1 defusedxml-0.7.1 exceptiongroup-1.1.1 executing-1.2.0 fastjsonschema-2.17.1 fqdn-1.5.1 idna-3.4 ipykernel-6.23.3 ipython-8.14.0 ipython-genutils-0.2.0 ipywidgets-8.0.6 isoduration-20.11.0 jedi-0.18.2 jinja2-3.1.2 jsonpointer-2.4 jsonschema-4.17.3 jupyter-1.0.0 jupyter-client-8.3.0 jupyter-console-6.6.3 jupyter-core-5.3.1 jupyter-events-0.6.3 jupyter-server-2.7.0 jupyter-server-terminals-0.4.4 jupyterlab-pygments-0.2.2 jupyterlab-widgets-3.0.7 markupsafe-2.1.3 matplotlib-inline-0.1.6 mistune-3.0.1 nbclassic-1.0.0 nbclient-0.8.0 nbconvert-7.6.0 nbformat-5.9.0 nest-asyncio-1.5.6 notebook-6.5.4 notebook-shim-0.2.3 overrides-7.3.1 packaging-23.1 pandocfilters-1.5.0 parso-0.8.3 pexpect-4.8.0 pickleshare-0.7.5 platformdirs-3.8.0 prometheus-client-0.17.0 prompt-toolkit-3.0.38 psutil-5.9.5 ptyprocess-0.7.0 pure-eval-0.2.2 pycparser-2.21 pygments-2.15.1 pyrsistent-0.19.3 python-dateutil-2.8.2 python-json-logger-2.0.7 pyzmq-25.1.0 qtconsole-5.4.3 qtpy-2.3.1 rfc3339-validator-0.1.4 rfc3986-validator-0.1.1 sniffio-1.3.0 soupsieve-2.4.1 stack-data-0.6.2 terminado-0.17.1 tinycss2-1.2.1 tornado-6.3.2 traitlets-5.9.0 uri-template-1.3.0 wcwidth-0.2.6 webcolors-1.13 webencodings-0.5.1 websocket-client-1.6.1 widgetsnbextension-4.0.7
+hdoop@LAPTOP-83QBJTTB:~$ sudo apt install jupyter-core
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  python3-ipython-genutils python3-jupyter-core python3-traitlets
+The following NEW packages will be installed:
+  jupyter-core python3-ipython-genutils python3-jupyter-core python3-traitlets
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 128 kB of archives.
+After this operation, 669 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-traitlets all 5.1.1-1 [81.2 kB]
+Get:2 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-ipython-genutils all 0.2.0-5 [21.9 kB]
+Get:3 http://archive.ubuntu.com/ubuntu jammy/universe amd64 python3-jupyter-core all 4.9.1-1 [20.3 kB]
+Get:4 http://archive.ubuntu.com/ubuntu jammy/universe amd64 jupyter-core all 4.9.1-1 [4388 B]
+Fetched 128 kB in 2s (77.9 kB/s)
+Selecting previously unselected package python3-traitlets.
+(Reading database ... 51372 files and directories currently installed.)
+Preparing to unpack .../python3-traitlets_5.1.1-1_all.deb ...
+Unpacking python3-traitlets (5.1.1-1) ...
+Selecting previously unselected package python3-ipython-genutils.
+Preparing to unpack .../python3-ipython-genutils_0.2.0-5_all.deb ...
+Unpacking python3-ipython-genutils (0.2.0-5) ...
+Selecting previously unselected package python3-jupyter-core.
+Preparing to unpack .../python3-jupyter-core_4.9.1-1_all.deb ...
+Unpacking python3-jupyter-core (4.9.1-1) ...
+Selecting previously unselected package jupyter-core.
+Preparing to unpack .../jupyter-core_4.9.1-1_all.deb ...
+Unpacking jupyter-core (4.9.1-1) ...
+Setting up python3-ipython-genutils (0.2.0-5) ...
+Setting up python3-traitlets (5.1.1-1) ...
+Setting up python3-jupyter-core (4.9.1-1) ...
+Setting up jupyter-core (4.9.1-1) ...
+Processing triggers for man-db (2.10.2-1) ...
+hdoop@LAPTOP-83QBJTTB:~$ nano .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ source .bashrc
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install matplotlib
+Defaulting to user installation because normal site-packages is not writeable
+Collecting matplotlib
+  Downloading matplotlib-3.7.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.6/11.6 MB 295.1 kB/s eta 0:00:00
+Collecting numpy>=1.20
+  Downloading numpy-1.25.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.6/17.6 MB 346.8 kB/s eta 0:00:00
+Requirement already satisfied: pyparsing>=2.3.1 in /usr/lib/python3/dist-packages (from matplotlib) (2.4.7)
+Collecting cycler>=0.10
+  Downloading cycler-0.11.0-py3-none-any.whl (6.4 kB)
+Collecting fonttools>=4.22.0
+  Downloading fonttools-4.40.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.2 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 609.1 kB/s eta 0:00:00
+Requirement already satisfied: python-dateutil>=2.7 in ./.local/lib/python3.10/site-packages (from matplotlib) (2.8.2)
+Collecting contourpy>=1.0.1
+  Downloading contourpy-1.1.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (300 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 300.7/300.7 KB 1,000.0 kB/s eta 0:00:00
+Collecting pillow>=6.2.0
+  Downloading Pillow-10.0.0-cp310-cp310-manylinux_2_28_x86_64.whl (3.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 1.4 MB/s eta 0:00:00
+Collecting kiwisolver>=1.0.1
+  Downloading kiwisolver-1.4.4-cp310-cp310-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 615.4 kB/s eta 0:00:00
+Requirement already satisfied: packaging>=20.0 in ./.local/lib/python3.10/site-packages (from matplotlib) (23.1)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil>=2.7->matplotlib) (1.16.0)
+Installing collected packages: pillow, numpy, kiwisolver, fonttools, cycler, contourpy, matplotlib
+Successfully installed contourpy-1.1.0 cycler-0.11.0 fonttools-4.40.0 kiwisolver-1.4.4 matplotlib-3.7.1 numpy-1.25.0 pillow-10.0.0
+hdoop@LAPTOP-83QBJTTB:~$ sudo apt-get install libsasl2-dev
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  libsasl2-dev
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 248 kB of archives.
+After this operation, 916 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 libsasl2-dev amd64 2.1.27+dfsg2-3ubuntu1.2 [248 kB]
+Fetched 248 kB in 2s (155 kB/s)
+Selecting previously unselected package libsasl2-dev.
+(Reading database ... 51472 files and directories currently installed.)
+Preparing to unpack .../libsasl2-dev_2.1.27+dfsg2-3ubuntu1.2_amd64.deb ...
+Unpacking libsasl2-dev (2.1.27+dfsg2-3ubuntu1.2) ...
+Setting up libsasl2-dev (2.1.27+dfsg2-3ubuntu1.2) ...
+Processing triggers for man-db (2.10.2-1) ...
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install sasl
+Defaulting to user installation because normal site-packages is not writeable
+Collecting sasl
+  Downloading sasl-0.3.1.tar.gz (44 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.7/44.7 KB 484.5 kB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: six in /usr/lib/python3/dist-packages (from sasl) (1.16.0)
+Building wheels for collected packages: sasl
+  Building wheel for sasl (setup.py) ... done
+  Created wheel for sasl: filename=sasl-0.3.1-cp310-cp310-linux_x86_64.whl size=277976 sha256=451fcd114ab9145cc722d1ad83f5d4e6fc51756f3cebd943cd2ceb951063100c
+  Stored in directory: /home/hdoop/.cache/pip/wheels/53/ae/69/81219be405be5f511fe9ba7fe77c7a84d86fb0d10697366205
+Successfully built sasl
+Installing collected packages: sasl
+Successfully installed sasl-0.3.1
+hdoop@LAPTOP-83QBJTTB:~$ sudo apt-get install g++
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+g++ is already the newest version (4:11.2.0-1ubuntu1).
+g++ set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install thrift_sasl
+Defaulting to user installation because normal site-packages is not writeable
+Collecting thrift_sasl
+  Downloading thrift_sasl-0.4.3-py2.py3-none-any.whl (8.3 kB)
+Collecting thrift>=0.10.0
+  Downloading thrift-0.16.0.tar.gz (59 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 59.6/59.6 KB 471.5 kB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+Collecting pure-sasl>=0.6.2
+  Downloading pure-sasl-0.6.2.tar.gz (11 kB)
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: six>=1.13.0 in /usr/lib/python3/dist-packages (from thrift_sasl) (1.16.0)
+Building wheels for collected packages: pure-sasl, thrift
+  Building wheel for pure-sasl (setup.py) ... done
+  Created wheel for pure-sasl: filename=pure_sasl-0.6.2-py3-none-any.whl size=11443 sha256=44b7c182c7ee0688497610b34da65026495f80c2cd78a3108740e6de8e0ffc58
+  Stored in directory: /home/hdoop/.cache/pip/wheels/57/7c/93/062238b0a68efe214024ca178233f248971045db1033c96a52
+  Building wheel for thrift (setup.py) ... done
+  Created wheel for thrift: filename=thrift-0.16.0-cp310-cp310-linux_x86_64.whl size=373825 sha256=b83cf75182b8ef45a86bf4fcd6cc83ae82482d2a9d963aaae1072eb8e6cf058a
+  Stored in directory: /home/hdoop/.cache/pip/wheels/52/f8/d2/acfd995e8247eb0cad372fa6a640a5fcf279ab2ed7c5c4490e
+Successfully built pure-sasl thrift
+Installing collected packages: pure-sasl, thrift, thrift_sasl
+Successfully installed pure-sasl-0.6.2 thrift-0.16.0 thrift_sasl-0.4.3
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install pyhive
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pyhive
+  Downloading PyHive-0.6.5.tar.gz (44 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.8/44.8 KB 649.2 kB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+Collecting future
+  Downloading future-0.18.3.tar.gz (840 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 840.9/840.9 KB 434.1 kB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: python-dateutil in ./.local/lib/python3.10/site-packages (from pyhive) (2.8.2)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil->pyhive) (1.16.0)
+Building wheels for collected packages: pyhive, future
+  Building wheel for pyhive (setup.py) ... done
+  Created wheel for pyhive: filename=PyHive-0.6.5-py3-none-any.whl size=51574 sha256=1ae29eb9e80a80923c0e122876a49a9e30c7bf64b22d34b411eb0dec2c412607
+  Stored in directory: /home/hdoop/.cache/pip/wheels/2f/51/26/016e93a30481dee1a91808520eefde1fff4da0804f289ac708
+  Building wheel for future (setup.py) ... done
+  Created wheel for future: filename=future-0.18.3-py3-none-any.whl size=492037 sha256=b8df7c059d139fef3bc55b30e16191ef16b65a21d91da28c3cd70896a6ff71c5
+  Stored in directory: /home/hdoop/.cache/pip/wheels/5e/a9/47/f118e66afd12240e4662752cc22cefae5d97275623aa8ef57d
+Successfully built pyhive future
+Installing collected packages: future, pyhive
+Successfully installed future-0.18.3 pyhive-0.6.5
+hdoop@LAPTOP-83QBJTTB:~$ pip3 install pandas
+Defaulting to user installation because normal site-packages is not writeable
+Collecting pandas
+  Downloading pandas-2.0.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.3/12.3 MB 122.2 kB/s eta 0:00:00
+Requirement already satisfied: python-dateutil>=2.8.2 in ./.local/lib/python3.10/site-packages (from pandas) (2.8.2)
+Collecting pytz>=2020.1
+  Downloading pytz-2023.3-py2.py3-none-any.whl (502 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 502.3/502.3 KB 55.5 kB/s eta 0:00:00
+Collecting tzdata>=2022.1
+  Downloading tzdata-2023.3-py2.py3-none-any.whl (341 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 341.8/341.8 KB 106.9 kB/s eta 0:00:00
+Requirement already satisfied: numpy>=1.21.0 in ./.local/lib/python3.10/site-packages (from pandas) (1.25.0)
+Requirement already satisfied: six>=1.5 in /usr/lib/python3/dist-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+Installing collected packages: pytz, tzdata, pandas
+Successfully installed pandas-2.0.3 pytz-2023.3 tzdata-2023.3
+hdoop@LAPTOP-83QBJTTB:~$ pip install SQLAlchemy==1.4.28
+Defaulting to user installation because normal site-packages is not writeable
+Collecting SQLAlchemy==1.4.28
+  Downloading SQLAlchemy-1.4.28-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.6 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 138.4 kB/s eta 0:00:00
+Collecting greenlet!=0.4.17
+  Downloading greenlet-2.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (613 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 613.7/613.7 KB 132.4 kB/s eta 0:00:00
+Installing collected packages: greenlet, SQLAlchemy
+Successfully installed SQLAlchemy-1.4.28 greenlet-2.0.2
+hdoop@LAPTOP-83QBJTTB:~$ hive --service hiveserver2 status
+2023-07-01 19:25:58: Starting HiveServer2
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/home/hadoop/apache-hive-3.1.3-bin/lib/log4j-slf4j-impl-2.17.1.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/hadoop/hadoop-3.3.5/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]
+Hive Session ID = 8f823dc5-2494-4625-b2b2-6d170533d07c
+Hive Session ID = 3b31ba86-1133-4540-905d-74897534a33f
+Hive Session ID = b52d3ac6-8c1a-49d5-8a39-11a7c3f9630a
+Hive Session ID = c9e1ab12-b007-4add-b1aa-ac80c194fd43
+Hive Session ID = d13e01e5-8266-4a2f-83c1-3205119cb3c6
+Hive Session ID = 12665aaa-0160-4c5b-a8c3-69aca8833aea
+Hive Session ID = c446b4b2-537a-4d07-b6ae-fd523f9d8bf8
+Hive Session ID = 01abfdc9-1f96-473f-af19-7d69795998ae
+Hive Session ID = dcfd75a5-617c-454d-83ca-0317640b80e2
+Hive Session ID = dd1e1cb8-4734-452a-8417-3dc321aba14c
+Hive Session ID = c388f0e4-fc56-49a4-ab98-60eb1fdf9a0c
+Hive Session ID = 44a37f33-1ea5-441f-b333-6e460d01a23f
+OK
+OK
+OK
+OK
+FAILED: LockException [Error 20008]: Operation COMMIT is not allowed without an active transaction
+OK
+FAILED: SemanticException Unable to load data to destination table. Error: The file that you are trying to load does not match the file format of the destination table.
+FAILED: ParseException line 1:66 missing EOF at 'OPTIONS' near 'prueba'
+FAILED: ParseException line 1:82 missing EOF at 'OPTIONS' near 'prueba'
+FAILED: ParseException line 1:66 missing EOF at 'OPTIONS' near 'prueba'
+FAILED: SemanticException Unable to load data to destination table. Error: The file that you are trying to load does not match the file format of the destination table.
+Query ID = hadoop_20230701195408_d66e36b4-77dd-49fe-b560-8ac5c17756e7
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0005, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0005/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 19:54:19,796 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 19:54:25,119 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.02 sec
+2023-07-01 19:54:31,334 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.33 sec
+MapReduce Total cumulative CPU time: 5 seconds 330 msec
+Ended Job = job_1688260540416_0005
+Loading data to table default.prueba
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.33 sec   HDFS Read: 40356 HDFS Write: 5683 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 330 msec
+OK
+OK
+Query ID = hadoop_20230701195904_f9cdeb9c-e88a-4975-bc68-2dbe9d3ff2f8
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0006, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0006/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 19:59:12,681 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 19:59:17,862 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.25 sec
+2023-07-01 19:59:24,053 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 5.13 sec
+MapReduce Total cumulative CPU time: 5 seconds 130 msec
+Ended Job = job_1688260540416_0006
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 5.13 sec   HDFS Read: 16185 HDFS Write: 103 SUCCESS
+Total MapReduce CPU Time Spent: 5 seconds 130 msec
+OK
+OK
+Query ID = hadoop_20230701200049_f8fa302f-4bd6-4edd-a955-e5dbdadf5358
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1688260540416_0007, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0007/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2023-07-01 20:00:57,669 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:01:03,846 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.19 sec
+MapReduce Total cumulative CPU time: 2 seconds 190 msec
+Ended Job = job_1688260540416_0007
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/.hive-staging_hive_2023-07-01_20-00-49_706_2315983929178968188-1/-ext-10002
+Moving data to directory hdfs://127.0.0.1:9000/user/hive/warehouse/my_view
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 2.19 sec   HDFS Read: 10461 HDFS Write: 2632 SUCCESS
+Total MapReduce CPU Time Spent: 2 seconds 190 msec
+OK
+OK
+OK
+Query ID = hadoop_20230701200612_9737109f-ca44-4b84-8a37-3798e3679e1b
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0008, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0008/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0008
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:06:20,898 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:06:26,055 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.17 sec
+2023-07-01 20:06:32,252 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.23 sec
+MapReduce Total cumulative CPU time: 6 seconds 230 msec
+Ended Job = job_1688260540416_0008
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0009, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0009/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0009
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:06:46,144 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:06:51,344 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.33 sec
+2023-07-01 20:06:57,508 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.54 sec
+MapReduce Total cumulative CPU time: 4 seconds 540 msec
+Ended Job = job_1688260540416_0009
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.23 sec   HDFS Read: 38621 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.54 sec   HDFS Read: 8346 HDFS Write: 291 SUCCESS
+Total MapReduce CPU Time Spent: 10 seconds 770 msec
+OK
+Query ID = hadoop_20230701200705_c5bc02bf-8981-4f1a-aa6e-10d38670a6d2
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0010, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0010/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0010
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:07:15,059 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:07:21,227 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.86 sec
+2023-07-01 20:07:28,439 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.54 sec
+MapReduce Total cumulative CPU time: 6 seconds 540 msec
+Ended Job = job_1688260540416_0010
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0011, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0011/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0011
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:07:41,423 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:07:46,618 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.25 sec
+2023-07-01 20:07:52,829 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.49 sec
+MapReduce Total cumulative CPU time: 4 seconds 490 msec
+Ended Job = job_1688260540416_0011
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.54 sec   HDFS Read: 19849 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.49 sec   HDFS Read: 8346 HDFS Write: 291 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 30 msec
+OK
+Query ID = hadoop_20230701201037_2ef8ac3d-b162-4e11-932f-7a79e256762b
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0012, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0012/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0012
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:10:45,268 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:10:51,476 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.12 sec
+2023-07-01 20:10:57,668 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.77 sec
+MapReduce Total cumulative CPU time: 6 seconds 770 msec
+Ended Job = job_1688260540416_0012
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0013, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0013/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0013
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:11:11,716 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:11:16,864 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.35 sec
+2023-07-01 20:11:23,131 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.21 sec
+MapReduce Total cumulative CPU time: 5 seconds 210 msec
+Ended Job = job_1688260540416_0013
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.77 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.21 sec   HDFS Read: 8342 HDFS Write: 290 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 980 msec
+OK
+Query ID = hadoop_20230701201425_a91dc4bf-b992-4d42-b6f2-0741e7f657ec
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0014, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0014/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0014
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:14:33,535 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:14:39,683 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.48 sec
+2023-07-01 20:14:45,834 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.88 sec
+MapReduce Total cumulative CPU time: 6 seconds 880 msec
+Ended Job = job_1688260540416_0014
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0015, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0015/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0015
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:14:58,322 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:15:04,536 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.56 sec
+2023-07-01 20:15:09,669 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.1 sec
+MapReduce Total cumulative CPU time: 5 seconds 100 msec
+Ended Job = job_1688260540416_0015
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.88 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.1 sec   HDFS Read: 8342 HDFS Write: 290 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 980 msec
+OK
+Query ID = hadoop_20230701202033_f756da8c-a45e-4282-b1d9-911258f03dc2
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0016, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0016/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0016
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:20:41,431 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:20:48,619 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.18 sec
+2023-07-01 20:20:53,766 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.49 sec
+MapReduce Total cumulative CPU time: 6 seconds 490 msec
+Ended Job = job_1688260540416_0016
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0017, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0017/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0017
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:21:06,953 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:21:12,094 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.5 sec
+2023-07-01 20:21:18,252 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.47 sec
+MapReduce Total cumulative CPU time: 5 seconds 470 msec
+Ended Job = job_1688260540416_0017
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.49 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.47 sec   HDFS Read: 8346 HDFS Write: 291 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 960 msec
+OK
+Query ID = hadoop_20230701202153_734f4be4-0026-4e6e-8a59-ee41f2ae8159
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0018, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0018/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0018
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:22:00,600 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:22:06,815 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.21 sec
+2023-07-01 20:22:12,978 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.16 sec
+MapReduce Total cumulative CPU time: 7 seconds 160 msec
+Ended Job = job_1688260540416_0018
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0019, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0019/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0019
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:22:26,341 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:22:31,487 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.39 sec
+2023-07-01 20:22:37,648 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.75 sec
+MapReduce Total cumulative CPU time: 4 seconds 750 msec
+Ended Job = job_1688260540416_0019
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.16 sec   HDFS Read: 20154 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.75 sec   HDFS Read: 7629 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 910 msec
+OK
+Query ID = hadoop_20230701202330_d0baaa28-7f29-47f4-b8c9-bedc40b01175
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0020, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0020/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0020
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:23:37,569 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:23:43,728 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.82 sec
+2023-07-01 20:23:49,893 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.25 sec
+MapReduce Total cumulative CPU time: 6 seconds 250 msec
+Ended Job = job_1688260540416_0020
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0021, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0021/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0021
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:24:03,428 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:24:08,602 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.26 sec
+2023-07-01 20:24:14,756 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.72 sec
+MapReduce Total cumulative CPU time: 4 seconds 720 msec
+Ended Job = job_1688260540416_0021
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.25 sec   HDFS Read: 19842 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.72 sec   HDFS Read: 7735 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 10 seconds 970 msec
+OK
+Query ID = hadoop_20230701202431_81e2d67d-c142-4a6a-a4a2-7edd5a013007
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0022, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0022/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0022
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:24:39,641 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:24:45,815 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.04 sec
+2023-07-01 20:24:51,985 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.59 sec
+MapReduce Total cumulative CPU time: 6 seconds 590 msec
+Ended Job = job_1688260540416_0022
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0023, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0023/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0023
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:25:05,315 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:25:10,589 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.67 sec
+2023-07-01 20:25:16,751 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.33 sec
+MapReduce Total cumulative CPU time: 5 seconds 330 msec
+Ended Job = job_1688260540416_0023
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.59 sec   HDFS Read: 19842 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.33 sec   HDFS Read: 7735 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 920 msec
+OK
+Query ID = hadoop_20230701202605_aff629e7-3ad5-4d6f-b0a3-80c8ddc1229f
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0024, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0024/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0024
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:26:14,917 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:26:21,174 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 3.94 sec
+2023-07-01 20:26:26,309 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.84 sec
+MapReduce Total cumulative CPU time: 6 seconds 840 msec
+Ended Job = job_1688260540416_0024
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0025, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0025/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0025
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:26:39,581 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:26:44,749 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.32 sec
+2023-07-01 20:26:50,900 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.82 sec
+MapReduce Total cumulative CPU time: 4 seconds 820 msec
+Ended Job = job_1688260540416_0025
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.84 sec   HDFS Read: 19842 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.82 sec   HDFS Read: 7735 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 660 msec
+OK
+Query ID = hadoop_20230701202653_ab50b667-8cbf-4b4e-97c5-dfbb4f0a3f22
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0026, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0026/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0026
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:27:04,528 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:27:10,701 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.28 sec
+2023-07-01 20:27:16,892 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.66 sec
+MapReduce Total cumulative CPU time: 6 seconds 660 msec
+Ended Job = job_1688260540416_0026
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0027, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0027/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0027
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:27:29,469 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:27:35,648 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 3.07 sec
+2023-07-01 20:27:40,772 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.42 sec
+MapReduce Total cumulative CPU time: 5 seconds 420 msec
+Ended Job = job_1688260540416_0027
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.66 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.42 sec   HDFS Read: 8342 HDFS Write: 290 SUCCESS
+Total MapReduce CPU Time Spent: 12 seconds 80 msec
+OK
+Query ID = hadoop_20230701202826_fd6c1841-b1ba-4ff5-b34a-916cc20e9626
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0028, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0028/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0028
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:28:33,910 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:28:40,119 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.94 sec
+2023-07-01 20:28:46,292 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.52 sec
+MapReduce Total cumulative CPU time: 7 seconds 520 msec
+Ended Job = job_1688260540416_0028
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0029, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0029/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0029
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:28:59,647 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:29:04,829 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.85 sec
+2023-07-01 20:29:10,986 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.27 sec
+MapReduce Total cumulative CPU time: 5 seconds 270 msec
+Ended Job = job_1688260540416_0029
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.52 sec   HDFS Read: 19842 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.27 sec   HDFS Read: 7735 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 12 seconds 790 msec
+OK
+Query ID = hadoop_20230701203109_7f848314-a269-4cce-b683-c0eba9952d1b
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0030, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0030/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0030
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:31:19,425 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:31:25,636 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.45 sec
+2023-07-01 20:31:30,760 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.74 sec
+MapReduce Total cumulative CPU time: 6 seconds 740 msec
+Ended Job = job_1688260540416_0030
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0031, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0031/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0031
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:31:44,075 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:31:49,227 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.42 sec
+2023-07-01 20:31:55,379 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.95 sec
+MapReduce Total cumulative CPU time: 4 seconds 950 msec
+Ended Job = job_1688260540416_0031
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.74 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.95 sec   HDFS Read: 8346 HDFS Write: 291 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 690 msec
+OK
+Query ID = hadoop_20230701203406_51a7af1b-4446-4e1b-9a8c-2d96c58a1651
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0032, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0032/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0032
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:34:15,804 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:34:21,996 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.62 sec
+2023-07-01 20:34:28,158 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 7.42 sec
+MapReduce Total cumulative CPU time: 7 seconds 420 msec
+Ended Job = job_1688260540416_0032
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0033, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0033/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0033
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:34:40,593 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:34:45,740 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.08 sec
+2023-07-01 20:34:51,895 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 4.58 sec
+MapReduce Total cumulative CPU time: 4 seconds 580 msec
+Ended Job = job_1688260540416_0033
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 7.42 sec   HDFS Read: 19864 HDFS Write: 763 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 4.58 sec   HDFS Read: 8342 HDFS Write: 290 SUCCESS
+Total MapReduce CPU Time Spent: 12 seconds 0 msec
+OK
+Query ID = hadoop_20230701203527_1d010f82-0ddf-413b-a3c1-04c7a02d82af
+Total jobs = 2
+Launching Job 1 out of 2
+Number of reduce tasks not specified. Estimated from input data size: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0034, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0034/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0034
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-01 20:35:36,788 Stage-1 map = 0%,  reduce = 0%
+2023-07-01 20:35:42,954 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 4.09 sec
+2023-07-01 20:35:49,136 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 6.77 sec
+MapReduce Total cumulative CPU time: 6 seconds 770 msec
+Ended Job = job_1688260540416_0034
+Launching Job 2 out of 2
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapreduce.job.reduces=<number>
+Starting Job = job_1688260540416_0035, Tracking URL = http://LAPTOP-83QBJTTB.:8088/proxy/application_1688260540416_0035/
+Kill Command = /home/hadoop/hadoop-3.3.5/bin/mapred job  -kill job_1688260540416_0035
+Hadoop job information for Stage-2: number of mappers: 1; number of reducers: 1
+2023-07-01 20:36:03,059 Stage-2 map = 0%,  reduce = 0%
+2023-07-01 20:36:08,214 Stage-2 map = 100%,  reduce = 0%, Cumulative CPU 2.51 sec
+2023-07-01 20:36:14,391 Stage-2 map = 100%,  reduce = 100%, Cumulative CPU 5.08 sec
+MapReduce Total cumulative CPU time: 5 seconds 80 msec
+Ended Job = job_1688260540416_0035
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 6.77 sec   HDFS Read: 19841 HDFS Write: 226 SUCCESS
+Stage-Stage-2: Map: 1  Reduce: 1   Cumulative CPU: 5.08 sec   HDFS Read: 7725 HDFS Write: 207 SUCCESS
+Total MapReduce CPU Time Spent: 11 seconds 850 msec
+OK
+OK
+Loading data to table default.muerte_nac
+OK
+OK
+OK
